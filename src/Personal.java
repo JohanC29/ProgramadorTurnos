@@ -1,5 +1,7 @@
-public class Personal {
-    private String Nombre;
+abstract class Personal {
+
+    private int id;
+    private String nombre;
     private int edad;
     private Vehiculo vehiculo;
 
@@ -7,18 +9,27 @@ public class Personal {
 
     }
 
-    public Personal(String nombre, int edad, Vehiculo vehiculo) {
-        Nombre = nombre;
+    public Personal(int id, String nombre, int edad, Vehiculo vehiculo) {
+        this.id = id;
+        this.nombre = nombre;
         this.edad = edad;
         this.vehiculo = vehiculo;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public int getEdad() {
@@ -37,5 +48,6 @@ public class Personal {
         this.vehiculo = vehiculo;
     }
 
-    public String getTipo(){return null;}
+    abstract String getTipo();
+
 }

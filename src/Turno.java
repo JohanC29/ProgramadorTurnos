@@ -38,4 +38,5 @@ public class Turno {
     public void setListPersonal(ArrayList<Personal> listPersonal) {
         this.listPersonal = listPersonal;
     }
+
 }
