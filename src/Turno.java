@@ -6,6 +6,8 @@ public class Turno {
     private Empresa empresa;
     private ArrayList<Personal> listPersonal;
 
+    private int id;
+
     public Turno() {
     }
 
@@ -39,4 +41,11 @@ public class Turno {
         this.listPersonal = listPersonal;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

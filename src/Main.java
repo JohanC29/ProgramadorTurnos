@@ -11,18 +11,35 @@ public class Main {
     public static void main(String[] args) {
         String vaAux;
         int nuAux;
+        boolean boAux;
+        boolean ingresarNuevoTurno;
 
         String formatoFecha = "dd-MM-yyyy";
 
         // Se crea una lista con los turnos ingresados
         ArrayList<Turno> turnos = new ArrayList<>();
         ArrayList<Personal> listaPersonal = new ArrayList<>();
-
         Utilidades utilidades = new Utilidades();
-        boolean ingresarNuevoTurno;
-        do {
-            ingresarNuevoTurno = false;
 
+        // Carga de datos aleatorios
+        int cantPersonal = 10;
+        int cantTurnos = 5;
+
+        Carga carga = new Carga(cantPersonal,cantTurnos);
+        turnos = carga.getTurnos();
+        listaPersonal = carga.getListaPersonal();
+
+
+        do {
+
+            // Validamos cuales son los turnos programados
+            for (Turno turno:
+                 turnos) {
+                System.out.println(turno.getFechaTurno());
+            }
+
+
+            ingresarNuevoTurno = false;
             // Control de fechas parceadas
             boolean intentoFecha;
             Date fechaTurno = null;
@@ -48,13 +65,15 @@ public class Main {
 
             } while (intentoFecha);
             Turno miTurno = null;
+
             // Validamos si el turno con la fecha ingresada exite.
             if (!turnos.isEmpty()) {
                 // recorremos el arrayList con las fechas hasta encontrar una fecha igual
-                for (Turno turno : turnos) {
-                    if (fechaTurno == turno.getFechaTurno()) {
+                for (int i = 0; i < turnos.size(); i++) {
+                    if (fechaTurno.equals(turnos.get(i).getFechaTurno())) {
                         // De encontrar coincidencias, finalizamos el ciclo.
-                        miTurno = turno;
+                        miTurno = turnos.get(i);
+                        miTurno.setId(i);
                         break;
                     }
                 }
@@ -64,6 +83,9 @@ public class Main {
             // vamos a crear el objeto
             if (miTurno == null) {
                 miTurno = new Turno();
+                // Seteamos el -1 indicando que no tiene posicion en el Array List
+                miTurno.setId(-1);
+                miTurno.setFechaTurno(fechaTurno);
             }
 
             // Asignamos la empresa que requiere los trabajadores
@@ -71,7 +93,6 @@ public class Main {
                 // Se debe de crear la empresa para el turno
                 vaAux = JOptionPane.showInputDialog("Ingrese el nombre de la empresa que desea agendar el turno");
                 nuAux = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de personal requierido:"));
-
                 // Se setea la clase recien creada
                 miTurno.setEmpresa(new Empresa(vaAux, nuAux));
             }
@@ -82,48 +103,101 @@ public class Main {
                 miTurno.setListPersonal(new ArrayList<Personal>());
             }
 
-            vaAux = "Fecha Turno: " + fecha + "\n" +
-                    "Nombre Empresa: " + miTurno.getEmpresa().getNombre() + "\n" +
-                    "Cantidad Personal Asignado: " + miTurno.getListPersonal().size() + "\n\n" +
-                    "Por Favor digite una de las siguientes opciones: \n1.Asignar Personal.\n2.Quitar Personal.\n3.Ver Personal";
+            boolean boRepetirMenu;
+            do {
+                boRepetirMenu = true;
 
-            int menuOpciones = Integer.parseInt(JOptionPane.showInputDialog(vaAux));
+                vaAux = "Fecha Turno: " + fecha + "\n" +
+                        "Nombre Empresa: " + miTurno.getEmpresa().getNombre() + "\n" +
+                        "Cantidad Personal Requerido: " + miTurno.getEmpresa().getCantidadPersonalRequerida() + "\n" +
+                        "Cantidad Personal Asignado: " + miTurno.getListPersonal().size() + "\n\n" +
+                        "Por Favor digite una de las siguientes opciones: \n1.Asignar Personal.\n2.Quitar Personal.\n3.Ver Personal. \n4.Salir Menu";
 
-            switch (menuOpciones) {
-                case 1:
-                    // Validamos la lista de las personas disponbles para el turno
+                int menuOpciones = Integer.parseInt(JOptionPane.showInputDialog(vaAux));
 
-                    // Si no exiten personas creadas, no hay ninguna persona disponible
-                    if (listaPersonal.isEmpty()) {
-                        // Agregar persona
-                        listaPersonal.add(utilidades.createPersona());
-                    }
+                switch (menuOpciones) {
+                    case 1:
 
-                    // Mostramos el listado de las personas diponibles para el turno
+                        do {
 
-                    // Recorremos la lista de personas y validamos que no esten asigandas al turno
-                    // seleccionado
-                    ArrayList<Personal> personalDisponible = new ArrayList<>();
-                    for (Personal personal : listaPersonal) {
-                        Boolean exiteEnTurno = false;
-                        for (Personal personalMiTurno : miTurno.getListPersonal()) {
-                            if (personalMiTurno.getId() == personal.getId()) {
-                                exiteEnTurno = true;
+                            // Validamos la lista de las personas disponbles para el turno
+
+                            // Si no exiten personas creadas, no hay ninguna persona disponible
+                            if (listaPersonal.isEmpty()) {
+                                // Agregar persona
+                                listaPersonal.add(utilidades.createPersona());
                             }
-                        }
 
-                        // Si el empleado exite en turno, no se encuentra disponible
-                        if (!exiteEnTurno) {
-                            personalDisponible.add(personal);
-                        }
-                    }
-                    
+                            // Mostramos el listado de las personas diponibles para el turno
 
-                    break;
+                            // Recorremos la lista de personas y validamos que no esten asigandas al turno
+                            // seleccionado
+                            ArrayList<Personal> personalDisponible = new ArrayList<>();
+                            for (Personal personal : listaPersonal) {
+                                Boolean exiteEnTurno = false;
+                                for (Personal personalMiTurno : miTurno.getListPersonal()) {
+                                    if (personalMiTurno.getId() == personal.getId()) {
+                                        exiteEnTurno = true;
+                                    }
+                                }
 
-                default:
-                    break;
-            }
+                                // Si el empleado exite en turno, no se encuentra disponible
+                                if (!exiteEnTurno) {
+                                    personalDisponible.add(personal);
+                                }
+                            }
+
+                            // Mostramos las personas disponibles para que se puedan asignar
+                            vaAux = "Personal Disponible:\n0-Crear Nuevo Empleado";
+                            for (int i = 0; i < personalDisponible.size(); i++) {
+                                vaAux += "\n" + (i + 1) + "-" + personalDisponible.get(i).getNombre() + "[" + personalDisponible.get(i).getTipo() + "]";
+                            }
+                            nuAux = utilidades.inputNumber(vaAux);
+
+                            // Validamos si se requiere crear el personal o se asigna al turno
+                            if (nuAux == 0) {
+                                // Agregar persona
+                                listaPersonal.add(utilidades.createPersonaValidate(listaPersonal));
+                                boAux = true;
+                            } else {
+                                // Asignamos al turno la persona seleccionada
+                                miTurno.getListPersonal().add(personalDisponible.get(nuAux - 1));
+                                boAux = ("SI".equals(utilidades.inputSelect("¿Desea asignar otro colaborador?", new String[]{"SI", "NO"}))) ? true : false;
+                            }
+
+                        } while (boAux);
+                        break;
+                    case 2:
+                        // Quitar Personal del turno
+                        do {
+
+                            // Mostramos las personas asignadas al turno
+                            vaAux = "Personal Asignado:\n0.Volver al Menu";
+                            for (int i = 0; i < miTurno.getListPersonal().size(); i++) {
+                                vaAux += "\n" + (i + 1) + "-" + miTurno.getListPersonal().get(i).getNombre() + "[" + miTurno.getListPersonal().get(i).getTipo() + "]";
+                            }
+
+                            nuAux = utilidades.inputNumber(vaAux);
+
+                            // Validamos si se requiere crear el personal o se asigna al turno
+                            if (nuAux != 0) {
+                                // Removamos el elemento de la lista
+                                miTurno.getListPersonal().remove((nuAux - 1));
+                            }
+
+                        } while (nuAux!=0);
+
+
+                        break;
+                    case 4:
+                        boRepetirMenu = false;
+                        break;
+
+                    default:
+                        boRepetirMenu = false;
+                        break;
+                }
+            } while (boRepetirMenu);
 
             // Con la cantidad de trabajadores requeridos. Creamos el personal
             for (int i = 0; i < miTurno.getEmpresa().getCantidadPersonalRequerida(); i++) {
@@ -133,6 +207,19 @@ public class Main {
             int nuNuevoTurno = Integer
                     .parseInt(JOptionPane.showInputDialog("¿Desea Agregar otro turno? 1.Si\n2.No\n(otro - No)"));
             ingresarNuevoTurno = nuNuevoTurno == 1 ? true : false;
+
+            // Asignamos el turno a la lista
+            if (miTurno.getId() == -1) {
+                // Agregamos el nuevo turno
+                turnos.add(miTurno);
+
+                System.out.println("Turno agregado");
+                System.out.println(fecha);
+            } else {
+                // Remplazamos el objeto del array list
+                turnos.set(miTurno.getId(), miTurno);
+
+            }
         } while (ingresarNuevoTurno);
 
     }
