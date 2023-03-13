@@ -20,6 +20,7 @@ public class Main {
         ArrayList<Turno> turnos = new ArrayList<>();
         ArrayList<Personal> listaPersonal = new ArrayList<>();
         Utilidades utilidades = new Utilidades();
+        SimpleDateFormat dateFormater = new SimpleDateFormat(formatoFecha);
 
         // Carga de datos aleatorios
         int cantPersonal = 10;
@@ -33,9 +34,10 @@ public class Main {
         do {
 
             // Validamos cuales son los turnos programados
+            vaAux = "Turnos programados:";
             for (Turno turno:
                  turnos) {
-                System.out.println(turno.getFechaTurno());
+                vaAux+="\n"+dateFormater.format(turno.getFechaTurno())+"-"+turno.getEmpresa().getNombre();
             }
 
 
@@ -48,9 +50,8 @@ public class Main {
                 intentoFecha = false;
 
                 // Solicitamos la fecha del turno a ingresar
-                fecha = JOptionPane.showInputDialog(
+                fecha = JOptionPane.showInputDialog(vaAux+"\n"+
                         "Ingrese la fecha para el turno a programar en formato [" + formatoFecha + "]: ");
-                SimpleDateFormat dateFormater = new SimpleDateFormat(formatoFecha);
 
                 try {
                     // Parseo de la fecha
@@ -186,8 +187,14 @@ public class Main {
                             }
 
                         } while (nuAux!=0);
-
-
+                        break;
+                    case 3:
+                        vaAux="Fecha Turno: "+fecha+"\nEmpresa: "+miTurno.getEmpresa().getNombre()+"\nColaboradores:";
+                        for (Personal personal :
+                                miTurno.getListPersonal()) {
+                            vaAux+="\n"+personal.getNombre()+"-"+personal.getTipo();
+                        }
+                        JOptionPane.showMessageDialog(null,vaAux);
                         break;
                     case 4:
                         boRepetirMenu = false;
@@ -199,28 +206,39 @@ public class Main {
                 }
             } while (boRepetirMenu);
 
-            // Con la cantidad de trabajadores requeridos. Creamos el personal
-            for (int i = 0; i < miTurno.getEmpresa().getCantidadPersonalRequerida(); i++) {
-
-            }
-
-            int nuNuevoTurno = Integer
-                    .parseInt(JOptionPane.showInputDialog("¿Desea Agregar otro turno? 1.Si\n2.No\n(otro - No)"));
-            ingresarNuevoTurno = nuNuevoTurno == 1 ? true : false;
+            ingresarNuevoTurno = ("SI".equals(utilidades.inputSelect("¿Desea Agregar otro turno?", new String[]{"SI", "NO"}))) ? true : false;
 
             // Asignamos el turno a la lista
             if (miTurno.getId() == -1) {
                 // Agregamos el nuevo turno
                 turnos.add(miTurno);
-
-                System.out.println("Turno agregado");
-                System.out.println(fecha);
             } else {
                 // Remplazamos el objeto del array list
                 turnos.set(miTurno.getId(), miTurno);
-
             }
         } while (ingresarNuevoTurno);
+
+
+        // Imprimimos el turno correspondiente con sus respectivos colaboradores
+
+        for (Turno turno:
+             turnos) {
+            vaAux = "\nFecha: "+turno.getFechaTurno().toString();
+            vaAux += "\nEmpresa: "+turno.getEmpresa().getNombre();
+            vaAux += "\nCantidad Personal Requerido: "+turno.getEmpresa().getCantidadPersonalRequerida();
+            vaAux += "\nCantidad Personal Asignado: "+turno.getListPersonal().size();
+            vaAux += "\nColaboradores Asignados: ";
+            for (int i = 0; i < turno.getListPersonal().size(); i++) {
+                vaAux+="\n"+(i+1)+" - "+turno.getListPersonal().get(i).getNombre()+" - "+turno.getListPersonal().get(i).getTipo()+" - "+turno.getListPersonal().get(i).getVehiculo().getTipoVehiculo();
+            }
+            if (turno.getListPersonal().size()==0){
+                vaAux+="\n"+"No existe personal asignado";
+            }
+
+            System.out.println(vaAux);
+            System.out.println("============================================================");
+        }
+        JOptionPane.showMessageDialog(null,"Se imprime la lista de turnos asignados.\nMuchas Gracias");
 
     }
 }
