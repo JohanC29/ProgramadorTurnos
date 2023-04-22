@@ -229,7 +229,7 @@ public class Main {
             vaAux += "\nCantidad Personal Asignado: "+turno.getListPersonal().size();
             vaAux += "\nColaboradores Asignados: ";
             for (int i = 0; i < turno.getListPersonal().size(); i++) {
-                vaAux+="\n"+(i+1)+" - "+turno.getListPersonal().get(i).getNombre()+" - "+turno.getListPersonal().get(i).getTipo()+" - "+turno.getListPersonal().get(i).getVehiculo().getTipoVehiculo();
+                vaAux+="\n"+(i+1)+" - "+turno.getListPersonal().get(i).getNombre()+" - "+turno.getListPersonal().get(i).getTipo()+" - "+turno.getListPersonal().get(i).getiVehiculo().getTipoVehiculo();
             }
             if (turno.getListPersonal().size()==0){
                 vaAux+="\n"+"No existe personal asignado";

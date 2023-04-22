@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 public class Carga {
 
@@ -301,13 +298,20 @@ public class Carga {
             id = i + 1;
             nombre = this.nombreApellidoRando();
             edad = this.getRandomNumber(0, 65);
-            Vehiculo vehiculo = new Vehiculo(this.placaRandom(), this.tipoVehiculoRamdom());
+            IVehiculo iVehiculo = null;
 
-            // Tipo de manera aleatoria
+            // Tipo de vehiculo de manera aleatoria
             if (this.randomBolean()) {
-                personal = new Mensajero(id, nombre, edad, vehiculo);
+                iVehiculo = new Automovil(this.placaRandom(), this.getRandomNumber(2015,2023).toString(), this.getRamdonMarcaAutomovil());
             } else {
-                personal = new Domiciliario(id, nombre, edad, vehiculo);
+                iVehiculo = new Motocicleta(this.placaRandom(), this.getRandomNumber(2015,2023).toString(), this.getRamdonMarcaMotocicleta());
+            }
+
+            // Tipo de personal de manera aleatoria
+            if (this.randomBolean()) {
+                personal = new Mensajero(id, nombre, edad, iVehiculo);
+            } else {
+                personal = new Domiciliario(id, nombre, edad, iVehiculo);
             }
             this.listaPersonal.add(personal);
         }
@@ -351,7 +355,7 @@ public class Carga {
         return ((int) Math.round(Math.random()) == 1) ? true : false;
     }
 
-    public int getRandomNumber(int min, int max) {
+    public Integer getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
@@ -393,6 +397,18 @@ public class Carga {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
+    }
+
+    public String getRamdonMarcaAutomovil(){
+        List<String> lista = List.of("CHEVROLET", "RENAULT", "MAZDA", "KIA","HYUNDAI","TOYOTA","FORD","NISSAN");
+        Random rand = new Random();
+        return lista.get(rand.nextInt(lista.size()));
+    }
+
+    public String getRamdonMarcaMotocicleta(){
+        List<String> lista = List.of("YAMAHA", "BAJAJ", "AKT", "AUTECO","BMW","HONDA","HERO","KAWASAKI");
+        Random rand = new Random();
+        return lista.get(rand.nextInt(lista.size()));
     }
 
 }

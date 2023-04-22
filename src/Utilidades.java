@@ -18,12 +18,21 @@ public class Utilidades {
         // Solicitamos los datos del vehiculo
         String placa = JOptionPane.showInputDialog("Por Favor ingrese la placa de la persona " + nombre);
         String tipoVehiculo = this.inputSelect("Por Favor ingrese el tipo de vehiculo de la persona " + nombre + ":", new String[]{"Moto", "Carro"});
+        String modelo = JOptionPane.showInputDialog("Por Favor ingrese el modelo del vehiculo de la persona " + nombre);
+        String marca = JOptionPane.showInputDialog("Por Favor ingrese la marca del vehiculo de la persona " + nombre);
+
+        IVehiculo iVehiculo;
+        if ("Moto".equals(tipoVehiculo)){
+            iVehiculo = new Motocicleta(placa, modelo, marca);
+        }else {
+            iVehiculo = new Automovil(placa, modelo, marca);
+        }
 
         Personal personal;
         if (tipoPersona == 1) {
-            personal = new Domiciliario(id, nombre, edad, new Vehiculo(placa, tipoVehiculo));
+            personal = new Domiciliario(id, nombre, edad, iVehiculo);
         } else {
-            personal = new Mensajero(id, nombre, edad, new Vehiculo(placa, tipoVehiculo));
+            personal = new Mensajero(id, nombre, edad, iVehiculo);
         }
         return personal;
     }

@@ -3,17 +3,17 @@ abstract class Personal {
     private int id;
     private String nombre;
     private int edad;
-    private Vehiculo vehiculo;
+    private IVehiculo iVehiculo;
 
     public Personal() {
 
     }
 
-    public Personal(int id, String nombre, int edad, Vehiculo vehiculo) {
+    public Personal(int id, String nombre, int edad, IVehiculo vehiculo) {
         this.id = id;
         this.nombre = nombre;
         this.edad = edad;
-        this.vehiculo = vehiculo;
+        this.iVehiculo = vehiculo;
     }
 
     public int getId() {
@@ -40,14 +40,16 @@ abstract class Personal {
         this.edad = edad;
     }
 
-    public Vehiculo getVehiculo() {
-        return vehiculo;
+    public IVehiculo getiVehiculo() {
+        return iVehiculo;
     }
 
-    public void setVehiculo(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo;
+    public void setVehiculo(IVehiculo vehiculo) {
+        this.iVehiculo = vehiculo;
     }
 
     abstract String getTipo();
+
+    abstract void imprimirTipoVehiculo();
 
 }
