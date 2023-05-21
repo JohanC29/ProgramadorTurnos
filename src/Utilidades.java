@@ -29,10 +29,23 @@ public class Utilidades {
         }
 
         Personal personal;
+        int tipoPersona2 = 0;
         if (tipoPersona == 1) {
-            personal = new Domiciliario(id, nombre, edad, iVehiculo);
+            tipoPersona2 = this.inputNumber("Por favor ingrese el tipo de personal: \n1.Domiciliario Tiempo Completo\n2.Domiciliario Medio Tiempo");
+
+            if(tipoPersona2 == 1){
+                personal = new DomiciliarioTiempoCompleto(id, nombre, edad, iVehiculo);
+            }else {
+                personal = new DomiciliarioMedioTiempo(id, nombre, edad, iVehiculo);
+            }
         } else {
-            personal = new Mensajero(id, nombre, edad, iVehiculo);
+
+            tipoPersona2 = this.inputNumber("Por favor ingrese el tipo de personal: \n1.Mensajero Tiempo Completo\n2.Mensajero Medio Tiempo");
+            if(tipoPersona2 == 1){
+                personal = new MensajeroTiempoCompleto(id, nombre, edad, iVehiculo);
+            }else {
+                personal = new MensajeroMedioTiempo(id, nombre, edad, iVehiculo);
+            }
         }
         return personal;
     }

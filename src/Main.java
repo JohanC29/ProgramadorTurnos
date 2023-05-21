@@ -220,7 +220,6 @@ public class Main {
 
 
         // Imprimimos el turno correspondiente con sus respectivos colaboradores
-
         for (Turno turno:
              turnos) {
             vaAux = "\nFecha: "+turno.getFechaTurno().toString();
@@ -239,6 +238,9 @@ public class Main {
             System.out.println("============================================================");
         }
         JOptionPane.showMessageDialog(null,"Se imprime la lista de turnos asignados.\nMuchas Gracias");
+
+
+        // Imprimimos el pago de los horarios programados segun su calculo
 
     }
 }

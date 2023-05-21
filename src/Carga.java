@@ -309,9 +309,24 @@ public class Carga {
 
             // Tipo de personal de manera aleatoria
             if (this.randomBolean()) {
-                personal = new Mensajero(id, nombre, edad, iVehiculo);
+                // Tipo de personal Medio Tiempo o Completo
+                if (this.randomBolean()) {
+//                    personal = new Mensajero(id, nombre, edad, iVehiculo);
+                    personal = new MensajeroTiempoCompleto(id, nombre, edad, iVehiculo);
+                }
+                else {
+                    personal = new MensajeroMedioTiempo(id, nombre, edad, iVehiculo);
+                }
             } else {
-                personal = new Domiciliario(id, nombre, edad, iVehiculo);
+                // Tipo de personal Medio Tiempo o Completo
+
+                if (this.randomBolean()) {
+//                    personal = new Domiciliario(id, nombre, edad, iVehiculo);
+                    personal = new DomiciliarioTiempoCompleto(id, nombre, edad, iVehiculo);
+                }
+                else {
+                    personal = new DomiciliarioMedioTiempo(id, nombre, edad, iVehiculo);
+                }
             }
             this.listaPersonal.add(personal);
         }

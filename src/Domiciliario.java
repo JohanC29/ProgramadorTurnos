@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Domiciliario extends Personal {
+public abstract class Domiciliario extends Personal {
 
     private ArrayList<Pedido> listPedido;
 

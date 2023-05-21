@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Mensajero extends Personal {
+public abstract class Mensajero extends Personal {
     private ArrayList<Paquete> listPaquete;
 
     public Mensajero(int id, String nombre, int edad, IVehiculo iVehiculo) {
@@ -24,6 +24,8 @@ public class Mensajero extends Personal {
     void imprimirTipoVehiculo() {
         System.out.println(super.getiVehiculo().getTipoVehiculo());
     }
+
+
 
 
 }

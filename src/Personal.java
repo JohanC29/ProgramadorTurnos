@@ -1,9 +1,13 @@
+import java.util.ArrayList;
+
 abstract class Personal {
 
     private int id;
     private String nombre;
     private int edad;
     private IVehiculo iVehiculo;
+
+    private ArrayList<Integer> listHora;
 
     public Personal() {
 
@@ -48,8 +52,18 @@ abstract class Personal {
         this.iVehiculo = vehiculo;
     }
 
+    public ArrayList<Integer> getListHora() {
+        return listHora;
+    }
+
+    public void setListHora(ArrayList<Integer> listHora) {
+        this.listHora = listHora;
+    }
+
     abstract String getTipo();
 
     abstract void imprimirTipoVehiculo();
+
+    abstract Double accept(Visitor visitor);
 
 }
