@@ -6,11 +6,7 @@ public abstract class Mensajero extends Personal {
     public Mensajero(int id, String nombre, int edad, IVehiculo iVehiculo) {
         super(id, nombre, edad, iVehiculo);
     }
-
-    @Override
-    public String getTipo() {
-        return "Mensajero";
-    }
+    public abstract String getTipo();
 
     public ArrayList<Paquete> getListPaquete() {
         return listPaquete;

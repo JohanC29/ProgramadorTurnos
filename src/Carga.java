@@ -284,6 +284,8 @@ public class Carga {
         this.generateRandomListPersonal(cantPersonal);
         this.generateTurnos(cantTurnos);
 
+
+
     }
 
     public void generateRandomListPersonal(int cantPersonal) {
@@ -330,15 +332,20 @@ public class Carga {
             }
             this.listaPersonal.add(personal);
         }
+
+
+
     }
 
     public void generateTurnos(int cantTurnos){
         // Obtenemos la fecha de hoy
         Date date = this.dateNow();
         for (int i = 0; i < cantTurnos; i++) {
+            // Se saca una copia por turno del personal disponible
+            ArrayList<Personal> listaPersonalClone = new ArrayList<>(this.listaPersonal);
             Date fechaTurno = this.sumarRestarDiasFecha(date,i);
             Empresa empresa = new Empresa(this.nombreEmpresasRandom(),this.getRandomNumber(1,10));
-            ArrayList<Personal> listPersonal = this.seleccionRandomPersonal(this.listaPersonal,this.getRandomNumber(1,this.listaPersonal.size()-1));
+            ArrayList<Personal> listPersonal = this.seleccionRandomPersonal(listaPersonalClone,this.getRandomNumber(1,listaPersonalClone.size()));
             this.turnos.add(new Turno(fechaTurno,empresa,listPersonal));
         }
     }
@@ -390,6 +397,7 @@ public class Carga {
     }
 
     public ArrayList<Personal> seleccionRandomPersonal(ArrayList<Personal> listaPersonal, int cantidadLista){
+
         ArrayList<Personal> listResult = new ArrayList<>();
         int nuAux ;
         for (int i = 0; i < cantidadLista; i++) {

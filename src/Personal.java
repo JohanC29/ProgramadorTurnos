@@ -7,7 +7,7 @@ abstract class Personal {
     private int edad;
     private IVehiculo iVehiculo;
 
-    private ArrayList<Integer> listHora;
+    private ArrayList<Integer> listHora = new ArrayList<Integer>();
 
     public Personal() {
 

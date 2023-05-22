@@ -1,10 +1,12 @@
 //import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 //import java.util.logging.SimpleFormatter;
 
 public class Main {
@@ -24,7 +26,7 @@ public class Main {
 
         // Carga de datos aleatorios
         int cantPersonal = 10;
-        int cantTurnos = 5;
+        int cantTurnos = 6;
 
         Carga carga = new Carga(cantPersonal,cantTurnos);
         turnos = carga.getTurnos();
@@ -220,6 +222,7 @@ public class Main {
 
 
         // Imprimimos el turno correspondiente con sus respectivos colaboradores
+        Utilidades.bannerTurnos();
         for (Turno turno:
              turnos) {
             vaAux = "\nFecha: "+turno.getFechaTurno().toString();
@@ -237,10 +240,30 @@ public class Main {
             System.out.println(vaAux);
             System.out.println("============================================================");
         }
-        JOptionPane.showMessageDialog(null,"Se imprime la lista de turnos asignados.\nMuchas Gracias");
 
+        // Calcular las horas trabajadas para cada empleado
+        utilidades.procesarHorasTrabajadas(listaPersonal,turnos);
+        calcularPago(listaPersonal);
 
-        // Imprimimos el pago de los horarios programados segun su calculo
+        JOptionPane.showMessageDialog(null,"Se imprime la lista de turnos asignados y nomina.\nMuchas Gracias");
+
+    }
+
+    private static void calcularPago(ArrayList<Personal> personals) {
+        CalcularPagoVisitor calcularPagoVisitor = new CalcularPagoVisitor();
+        // Crear objeto NumberFormat para formatear el valor facturado
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+        Utilidades.bannerPago();
+        // Imprimir encabezado de la tabla
+        System.out.format("%-12s | %-30s | %-30s | %-15s%n",
+                "ID Empleado", "Nombre Empleado", "Categoría Empleado", "Valor Facturado");
+        System.out.println("-------------------------------------------");
+        for (Personal personal:
+             personals) {
+            String valorFormateado = numberFormat.format(personal.accept(calcularPagoVisitor));
+            System.out.format("%-12d | %-30s | %-30s | %15s%n",
+                    personal.getId(), personal.getNombre(), personal.getTipo(), valorFormateado);
+        }
 
     }
 }
